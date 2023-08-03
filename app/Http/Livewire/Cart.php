@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 use App\Models\Carts;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Cart extends Component
@@ -23,16 +25,25 @@ class Cart extends Component
 
     public function getCartItems()
     {
-        $this->cart_items = Carts::orderBy('created_At', 'DESC')->get();
-        $this->totalSum = $this->cart_items->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
+        if (Auth::check()) {
+            $user = Auth::user();
+            $this->cart_items = Carts::where('user_id', $user->id)
+                ->orderBy('created_at', 'DESC')
+                ->get();
+    
+            $this->totalSum = $this->cart_items->sum(function ($item) {
+                return $item->product->price * $item->quantity;
+            });
+        } else {
+            $this->cart_items = collect(); // Empty collection for guests
+            $this->totalSum = 0.00;
+        }
     }
 
     public function updateQuantity($id, $action)
     {
         $cartItem = Carts::findOrFail($id);
-
+    
         if ($action === 'increment') {
             $cartItem->update([
                 'quantity' => $cartItem->quantity + 1,
@@ -42,11 +53,21 @@ class Cart extends Component
                 'quantity' => $cartItem->quantity - 1,
             ]);
         }
-
+    
         $this->emit('quantityUpdated');
-
+    
+        if (Auth::check()) {
+            $user = Auth::user();
+            // Insert user's data into the carts table
+            Carts::updateOrCreate(
+                ['user_id' => $user->id, 'product_id' => $cartItem->product_id],
+                ['quantity' => $cartItem->quantity]
+            );
+        }
+    
         $this->getCartItems();
     }
+    
 
     public function updateShippingCost()
     {
@@ -63,15 +84,13 @@ class Cart extends Component
 
     public function removeItem($id)
     {
-        $cart_items = Carts::where('id', $id)->first();
-        if(!$cart_items){
-            return;
-        }
+        $cartItem = Carts::findOrFail($id);
         
-        if($cart_items->delete()){
+        if (Auth::check() && $cartItem->user_id === Auth::user()->id) {
+            $cartItem->delete();
             $this->emit("itemDeleted");
         }
-
+        
         $this->getCartItems();
     }
 

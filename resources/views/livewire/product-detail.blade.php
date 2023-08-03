@@ -93,7 +93,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
               </svg>
             </div>
-            <button wire:click="addToCart" class="h-14 px-6 py-2 font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white"> Add to Cart </button>
+            <button wire:click="addToCart" class="h-14 px-6 py-2 font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white" {{ $disabled ? 'disabled' : '' }}> Add to Cart </button>
           </div>
         </div>
       </div>

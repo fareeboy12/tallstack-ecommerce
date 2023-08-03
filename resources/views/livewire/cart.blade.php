@@ -84,7 +84,7 @@
                 </svg>
             </button>
 
-            <input class="mx-2 border text-center w-12" type="text" value="{{ $item->quantity }}" disabled>
+            <input class="mx-2 border text-center w-14" type="text" value="{{ $item->quantity }}" disabled>
 
             <button wire:click="updateQuantity({{ $item->id }}, 'increment')">
                 <svg class="fill-current text-gray-600 w-3" viewBox="0 0 448 512">

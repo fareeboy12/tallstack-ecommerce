@@ -30,5 +30,9 @@
             </div>
         @endforeach
     </section>
-    {{ $products->links() }}
+    <section class="w-fit mx-auto grid grid-cols-1 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-20">
+        <div class="w-full">
+            {{ $products->links() }}
+        </div>
+    </section>
 </div>
