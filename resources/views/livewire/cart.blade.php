@@ -14,12 +14,12 @@
             x-transition:leave="transition ease-in duration-300"
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-90"
-            x-init="@this.on('itemDeleted', () => { showSuccessMessage = true; setTimeout(() => showSuccessMessage = false, 5000)})">
+            x-init="@this.on('success', () => { showSuccessMessage = true; setTimeout(() => showSuccessMessage = false, 5000)})">
             <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
             </svg>
             <div class="ml-3 text-sm font-medium">
-                Item Removed from Cart.
+              {{ session('successMessage') }}
             </div>
             <button type="button" @click="showSuccessMessage = false" class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"  data-dismiss-target="#alert-border-3" aria-label="Close">
                 <span class="sr-only">Dismiss</span>
@@ -29,23 +29,23 @@
             </button>
         </div>
 
-        <div id="alert-border-3" class="flex items-center p-4 mb-4 text-green-800 border-t-4 border-green-300 bg-green-50 dark:text-green-400 dark:bg-gray-800 dark:border-green-800" role="alert" 
-            x-data="{ showQuantityUpdateStatus: false }"
-            x-show="showQuantityUpdateStatus"
+        <div id="alert-border-3" class="flex items-center p-4 mb-4 text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800" role="alert" 
+            x-data="{ showFailMessage: false }"
+            x-show="showFailMessage"
             x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 scale-90"
             x-transition:enter-end="opacity-100 scale-100"
             x-transition:leave="transition ease-in duration-300"
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-90"
-            x-init="@this.on('quantityUpdated', () => { showQuantityUpdateStatus = true; setTimeout(() => showQuantityUpdateStatus = false, 5000)})">
+            x-init="@this.on('error', () => { showFailMessage = true; setTimeout(() => showFailMessage = false, 5000)})">
             <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
             </svg>
             <div class="ml-3 text-sm font-medium">
-                Quantity Updated.
+              {{ session('errorMessage') }}
             </div>
-            <button type="button" @click="showQuantityUpdateStatus = false" class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"  data-dismiss-target="#alert-border-3" aria-label="Close">
+            <button type="button" @click="showFailMessage = false" class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"  data-dismiss-target="#alert-border-3" aria-label="Close">
                 <span class="sr-only">Dismiss</span>
                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -54,6 +54,9 @@
         </div>
     </div>
 
+    @if($cart_items->isEmpty())
+    <h1 class="font-bold text-lg text-center">Cart is Empty.</h1>
+    @else  
     <div class="flex shadow-md my-10">
       <div class="w-3/4 bg-white px-10 py-10">
         <div class="flex justify-between border-b pb-8">
@@ -113,16 +116,29 @@
         <div>
           <label class="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
           <select class="block p-2 text-gray-600 w-full text-sm" wire:model="selectedShippingMethod" wire:change="updateShippingCost">
-            <option value="standard" selected>Standard shipping - $0</option>
-            <option value="fast">Fast Delivery - $20.00</option>
-            <option value="urgent">Urgent Delivery - $40.00</option>
+            <option value="standard" @if ($selectedShippingMethod === 'standard') selected @endif>Standard shipping - $0</option>
+            <option value="fast" @if ($selectedShippingMethod === 'fast') selected @endif>Fast Delivery - $20.00</option>
+            <option value="urgent" @if ($selectedShippingMethod === 'urgent') selected @endif>Urgent Delivery - $40.00</option>
           </select>
         </div>
         <div class="py-10">
+          
+
+          @if ($cart_items->isNotEmpty() && $cart_items->first()->coupon_code)
+          <h2 class="text-sm font-bold">Coupon Applied.</h2>
+          <div class="text-sm mt-3 flex justify-between">Remove Coupon
+            <button wire:click="removeCoupon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          @else
           <label for="promo" class="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>
-          <input type="text" id="promo" placeholder="Enter your code" class="p-2 text-sm w-full">
+          <input type="text" id="promo" wire:model="couponCode" placeholder="Enter your code" class="p-2 text-sm w-full">
         </div>
-        <button class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button>
+        <button wire:click="applyCoupon" class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button>
+        @endif
         <div class="border-t mt-8">
           <div class="flex font-semibold justify-between py-6 text-sm uppercase">
             <span>Total cost</span>
@@ -131,6 +147,6 @@
           <button class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
         </div>
       </div>
-
     </div>
+    @endif
   </div>
