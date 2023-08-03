@@ -95,14 +95,14 @@
                 </svg>
             </button>
           </div>
-          <span class="text-center w-1/5 font-semibold text-sm">${{ $item->product->price }}</span>
-          <span class="text-center w-1/5 font-semibold text-sm">${{ $item->product->price * $item->quantity }}</span>
+          <span class="text-center w-1/5 font-semibold text-sm">${{ $item->product->sale_price ?? $item->product->price }}</span>
+          <span class="text-center w-1/5 font-semibold text-sm">${{ isset($item->product->sale_price) ? ($item->product->sale_price * $item->quantity) : ($item->product->price * $item->quantity) }}</span>
         </div>
         @endforeach
 
-        <a href="{{ route('home') }}" class="flex font-semibold text-indigo-600 text-sm mt-10">
+        <a href="{{ route('home') }}" class="flex font-semibold text-grey-800 text-sm mt-10">
       
-          <svg class="fill-current mr-2 text-indigo-600 w-4" viewBox="0 0 448 512"><path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z"/></svg>
+          <svg class="fill-current mr-2 text-grey-800 w-4" viewBox="0 0 448 512"><path d="M134.059 296H436c6.627 0 12-5.373 12-12v-56c0-6.627-5.373-12-12-12H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029 239.029c-9.373 9.373-9.373 24.569 0 33.941l86.059 86.059c15.119 15.119 40.971 4.411 40.971-16.971V296z"/></svg>
           Continue Shopping
         </a>
       </div>
@@ -142,9 +142,9 @@
         <div class="border-t mt-8">
           <div class="flex font-semibold justify-between py-6 text-sm uppercase">
             <span>Total cost</span>
-            <span>$600</span>
+            <span>${{ number_format($grandTotal, 2) }}</span>
           </div>
-          <button class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+          <button class="bg-gray-800 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
         </div>
       </div>
     </div>

@@ -3,11 +3,11 @@
 @endsection
 <div class="container mx-auto">
     <h1 class="mt-10 text-center font-bold text-4xl mb-4">All Products</h1>
-    <section class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">    
+    <section class="w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">    
         @foreach ($products as $product)
             <div class="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                 <a href="/product/{{ $product->slug }}">
-                    <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="{{$product->title}}" class="h-80 w-72 object-cover rounded-t-xl" />
+                    <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="{{$product->title}}" class="h-80 w-full object-cover rounded-t-xl" />
                     <div class="px-4 py-3 w-72">
                         <span class="text-gray-400 mr-3 uppercase text-xs">Brand</span>
                         <p class="text-lg font-bold text-black truncate block capitalize">{{ $product->title }}</p>
@@ -30,7 +30,7 @@
             </div>
         @endforeach
     </section>
-    <section class="w-fit mx-auto grid grid-cols-1 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-20">
+    <section class="mt-10 mb-20">
         <div class="w-full">
             {{ $products->links() }}
         </div>
