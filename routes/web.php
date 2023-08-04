@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\ProductsListing;
 use App\Http\Livewire\ProductDetail;
 use App\Http\Livewire\Cart;
+use App\Http\Livewire\Checkout;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,3 +63,4 @@ Route::middleware('auth')->group(function () {
 Route::get('/', ProductsListing::class)->name('home');
 Route::get('/product/{slug}', ProductDetail::class);
 Route::get('/cart', Cart::class)->name('cart');
+Route::get('/checkout', Checkout::class)->name('checkout');

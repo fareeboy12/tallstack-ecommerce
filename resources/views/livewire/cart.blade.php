@@ -110,7 +110,7 @@
       <div id="summary" class="w-1/4 px-8 py-10">
         <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
         <div class="flex justify-between mt-10 mb-5">
-          <span class="font-semibold text-sm uppercase">Items {{ count($cart_items) }}</span>
+          <span class="font-semibold text-sm uppercase">SubTotal</span>
           <span class="font-semibold text-sm">${{ $totalSum }}</span>
         </div>
         <div>
@@ -144,7 +144,7 @@
             <span>Total cost</span>
             <span>${{ number_format($grandTotal, 2) }}</span>
           </div>
-          <button class="bg-gray-800 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+          <a href="{{ route('checkout') }}" class="px-24 bg-gray-800 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</a>
         </div>
       </div>
     </div>
