@@ -57,7 +57,6 @@ class Cart extends Component
         }
     }
     
-
     public function updateQuantity($id, $action)
     {
         $cartItem = Carts::findOrFail($id);
@@ -97,8 +96,6 @@ class Cart extends Component
         session()->flash('successMessage', 'Quantity Updated.');
     }
     
-    
-    
     public function updateShippingCost()
     {
         if ($this->selectedShippingMethod === 'standard') {
@@ -132,7 +129,6 @@ class Cart extends Component
         }
     }
     
-
     public function removeItem($id)
     {
         $cartItem = Carts::findOrFail($id);
@@ -155,10 +151,20 @@ class Cart extends Component
     
         // Get the coupon price from the first record
         $firstCartItem = $this->cart_items->first();
-        $couponPrice = $firstCartItem->coupon_price;
+        if(isset($firstCartItem->coupon_price)){
+            $couponPrice = $firstCartItem->coupon_price;
+        }
+        else{
+            $couponPrice = 0.00;
+        }
     
         // Get the shipping fee from the first record
-        $shippingFee = $firstCartItem->shipping_fee;
+        if(isset($firstCartItem->shipping_fee)){
+            $shippingFee = $firstCartItem->shipping_fee;
+        }
+        else{
+            $shippingFee = 0.00;
+        }
     
         $this->grandTotal = $productsTotal + $shippingFee - $couponPrice;
     }

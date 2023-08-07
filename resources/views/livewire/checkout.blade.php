@@ -1,3 +1,6 @@
+@section('title')
+    Checkout
+@endsection
 <div class="container p-12 mx-auto">
     <div class="mx-auto">
         <div id="alert-border-3" class="flex items-center p-4 mb-4 text-green-800 border-t-4 border-green-300 bg-green-50 dark:text-green-400 dark:bg-gray-800 dark:border-green-800" role="alert" 
@@ -123,7 +126,7 @@
                     Subtotal:<span class="ml-2">${{ number_format($totalSum, 2) }}</span>
                 </div>
                 <div class="flex items-center w-full py-4 text-sm font-semibold border-b border-gray-300 lg:py-5 lg:px-3 text-heading last:border-b-0 last:text-base last:pb-0">
-                    Shipping Charges:<span class="ml-2">${{ $shipping_fee }}</span>
+                    Shipping Charges:<span class="ml-2">${{ $shipping_fee ?? '0' }}</span>
                 </div>
                 @if(isset($item->coupon_fee))
                 <div class="flex items-center w-full py-4 text-sm font-semibold border-b border-gray-300 lg:py-5 lg:px-3 text-heading last:border-b-0 last:text-base last:pb-0">

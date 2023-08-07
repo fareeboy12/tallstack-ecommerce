@@ -95,8 +95,8 @@
                 </svg>
             </button>
           </div>
-          <span class="text-center w-1/5 font-semibold text-sm">${{ $item->product->sale_price ?? $item->product->price }}</span>
-          <span class="text-center w-1/5 font-semibold text-sm">${{ isset($item->product->sale_price) ? ($item->product->sale_price * $item->quantity) : ($item->product->price * $item->quantity) }}</span>
+          <span class="text-center w-1/5 font-semibold text-sm">${{ number_format($item->product->sale_price ?? $item->product->price, 2) }}</span>
+          <span class="text-center w-1/5 font-semibold text-sm">${{ number_format(isset($item->product->sale_price) ? ($item->product->sale_price * $item->quantity) : ($item->product->price * $item->quantity),2) }}</span>
         </div>
         @endforeach
 
@@ -111,7 +111,7 @@
         <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
         <div class="flex justify-between mt-10 mb-5">
           <span class="font-semibold text-sm uppercase">SubTotal</span>
-          <span class="font-semibold text-sm">${{ $totalSum }}</span>
+          <span class="font-semibold text-sm">${{ number_format($totalSum, 2) }}</span>
         </div>
         <div>
           <label class="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
